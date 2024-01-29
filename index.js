@@ -1,9 +1,13 @@
 let express=   require('express')  
 let app=  express()
+var cors = require('cors')
    let Question=  require('./model/quiz')
    let User=require('./model/user')
+   app.use(express.urlencoded({ extended: true }));
+   app.use(express.json())
+   app.use(cors())
 let mongoose=  require('mongoose')
-mongoose.connect('mongodb://localhost/27017/quizApp').then(()=>{
+mongoose.connect('mongodb://127.0.0.1:27017/quizApp').then(()=>{
     console.log('db connected ');
 }).catch((err)=>{
     console.log(err);
@@ -19,10 +23,9 @@ app.get('/', async (req, res) => {
     }
 });
 
-
 // Create a new question
-
 app.post('/', async (req, res) => {
+    console.log(req.body,"ques");
     const question = new Question({
         question: req.body.question,
         options: req.body.options,
