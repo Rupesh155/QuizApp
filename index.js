@@ -1,107 +1,108 @@
-let express=   require('express')  
-let app=  express()
+let express = require('express')
+let app = express()
 var cors = require('cors')
-   let Question=  require('./model/quiz')
-   let User=require('./model/user')
-   app.use(express.urlencoded({ extended: true }));
-   app.use(express.json())
-   app.use(cors())
-let mongoose=  require('mongoose')
-mongoose.connect('mongodb://127.0.0.1:27017/quizApp').then(()=>{
+
+const Quiz = require('./models/quiz');
+const Question = require('./models/question');
+const QuizQuestion = require('./models/quizQuestion');
+const Choice = require('./models/Choice');
+const QuestionChoice = require('./models/questionChoice');
+const User = require('./models/User');
+const UserAttempt = require('./models/userAttempt');
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
+app.use(cors())
+let mongoose = require('mongoose')
+mongoose.connect('mongodb://127.0.0.1:27017/quizApp').then(() => {
     console.log('db connected ');
-}).catch((err)=>{
+}).catch((err) => {
     console.log(err);
 })
 
-// Get all questions
-app.get('/', async (req, res) => {
+
+
+// Create a new quiz
+app.post('/api/quizzes', async (req, res) => {
     try {
-        const questions = await Question.find();
-        res.json(questions);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+      const quiz = await Quiz.create(req.body);
+      res.status(201).json(quiz);
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-});
-
-// Create a new question
-app.post('/', async (req, res) => {
-    console.log(req.body,"ques");
-    const question = new Question({
-        question: req.body.question,
-        options: req.body.options,
-        correctOption: req.body.correctOption,
-    });
-
+  });
+  
+  // Get all quizzes
+  app.get('/api/quizzes', async (req, res) => {
     try {
-        const newQuestion = await question.save();
-        res.status(201).json(newQuestion);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
+      const quizzes = await Quiz.find();
+      res.status(200).json(quizzes);
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-});
-
-
-
-// Get a specific question by ID
-app.get('/:id',  getQuestion,  (req, res) => {
-    res.json(res.question);
-});
-
-
-// Update a question by ID
-app.patch('/:id',   getQuestion,async (req, res) => {
-    if (req.body.question != null) {
-        res.question.question = req.body.question;
-    }
-    if (req.body.options != null) {
-        res.question.options = req.body.options;
-    }
-    if (req.body.correctOption != null) {
-        res.question.correctOption = req.body.correctOption;
-    }
-
+  });
+  
+  // Get a specific quiz by ID
+  app.get('/api/quizzes/:id', async (req, res) => {
     try {
-        const updatedQuestion = await res.question.save();
-        res.json(updatedQuestion);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
+      const quiz = await Quiz.findById(req.params.id);
+      if (!quiz) {
+        res.status(404).json({ error: 'Quiz not found' });
+        return;
+      }
+      res.status(200).json(quiz);
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-});
-
-
-
-// Delete a question by ID
-app.delete('/:id', getQuestion, async (req, res) => {
+  });
+  
+  // Update a quiz by ID
+  app.put('/api/quizzes/:id', async (req, res) => {
     try {
-        await res.question.remove();
-        res.json({ message: 'Question deleted' });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+      const quiz = await Quiz.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      if (!quiz) {
+        res.status(404).json({ error: 'Quiz not found' });
+        return;
+      }
+      res.status(200).json(quiz);
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-});
-
-
-
-async function getQuestion(req, res, next) {
-    let question;
+  });
+  
+  // Delete a quiz by ID
+  app.delete('/api/quizzes/:id', async (req, res) => {
     try {
-        question = await Question.findById(req.params.id);
-        if (question == null) {
-            return res.status(404).json({ message: 'Cannot find question' });
-        }
-    } catch (err) {
-        return res.status(500).json({ message: err.message });
+      const quiz = await Quiz.findByIdAndDelete(req.params.id);
+      if (!quiz) {
+        res.status(404).json({ error: 'Quiz not found' });
+        return;
+      }
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-
-    res.question = question;
-    next();
-}
+  });
+  
 
 
 
 
 
-app.listen(4000,()=>{
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.listen(4000, () => {
     console.log('server running on port no 4000');
 })
 
