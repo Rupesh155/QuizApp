@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Quiz = require('../server/models/quiz');
+const Quiz = require('../models/quiz');
 
 // Create a new quiz
 router.post('/quizzes', async (req, res) => {
+  console.log(req.body,"rrr");
   try {
     const quiz = await Quiz.create(req.body);
     res.status(201).json(quiz);

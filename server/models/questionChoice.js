@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const questionChoiceSchema = new mongoose.Schema({
   questionId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -18,5 +17,4 @@ const questionChoiceSchema = new mongoose.Schema({
 });
 
 const QuestionChoice = mongoose.model('QuestionChoice', questionChoiceSchema);
-
 module.exports = QuestionChoice;

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Choice = require('../server/models/Choice');
+const Choice = require('../models/choice');
 
 // Create a new choice
 router.post('/choices', async (req, res) => {
