@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate,useParams } from 'react-router-dom';
-
 const CreateQuestion = () => {
   const [questionTitle, setQuestionTitle] = useState('');
   const navigate = useNavigate();
   let {id}=useParams()
-
   const handleTitleChange = (e) => {
     setQuestionTitle(e.target.value);
   };
-
   const handleSaveQuestion = () => {
     // Perform a POST request to create a new question on your server API
     fetch('http://localhost:4000/api/questions', {
@@ -17,7 +14,7 @@ const CreateQuestion = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ title: questionTitle }),
+      body: JSON.stringify({ title: questionTitle , quizId:id}),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -30,7 +27,6 @@ const CreateQuestion = () => {
         console.error('Error creating question:', error);
       });
   };
-
   return (
     <div>
       <h3>Create Question</h3>

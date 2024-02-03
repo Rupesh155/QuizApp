@@ -25,7 +25,8 @@ router.get('/question-choices', async (req, res) => {
 // Get question-choice links by question ID
 router.get('/question-choices/:questionId', async (req, res) => {
   try {
-    const questionChoices = await QuestionChoice.find({ questionId: req.params.questionId });
+    const questionChoices = await QuestionChoice.find({ questionId: req.params.questionId }).populate('choiceId');
+    console.log();
     res.status(200).json(questionChoices);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });

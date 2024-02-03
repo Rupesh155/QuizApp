@@ -1,11 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const Question = require('../models/question');
+const QuizQuestion = require('../models/quizQuestion');
+
 
 // Create a new question
 router.post('/questions', async (req, res) => {
   try {
     const question = await Question.create(req.body);
+    let questionId=question._id
+    let quizId=req.body.quizId
+    const quizQuestion =   await QuizQuestion.create({ quizId, questionId });
+
+
     res.status(201).json(question);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });

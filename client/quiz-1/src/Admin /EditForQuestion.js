@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const EditQuestion = () => {
-  const { id } = useParams();
+  const { quizId,id } = useParams();
   const [questionTitle, setQuestionTitle] = useState('');
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     // Fetch question data from your server API based on the question ID
@@ -35,7 +36,7 @@ const EditQuestion = () => {
       .then((data) => {
         console.log('Question updated successfully:', data);
         // Navigate back to the questions page or any other desired route
-        navigate('/questions');
+        navigate(`/admin/quiz/${quizId}`);
       })
       .catch((error) => {
         console.error('Error updating question:', error);

@@ -1,16 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const Choice = require('../models/choice');
+const QuestionChoice = require('../models/questionChoice');
 
 // Create a new choice
 router.post('/choices', async (req, res) => {
   try {
     const choice = await Choice.create(req.body);
+    const choiceId = choice._id;
+    const questionId = req.body.questionId;
+    const isCorrect = req.body.isCorrect;
+    console.log(questionId, choiceId, isCorrect, "quesID");
+    const quizQuestion = await QuestionChoice.create({ choiceId, isCorrect, questionId });
     res.status(201).json(choice);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error creating choice:', error);
+    res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 });
+
 
 // Get all choices
 router.get('/choices', async (req, res) => {

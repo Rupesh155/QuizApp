@@ -7,6 +7,9 @@ import EditQuiz from './Admin /EditForQuiz'
 import DeleteQuiz from './Admin /DeletForQuiz'
 import EditQuestion from './Admin /EditForQuestion'
 import CreateQuestion from './Admin /CreateQuestions'
+import CreateChoiceForm from './Admin /CreateChoiceForm'
+import Choice from './Admin /Choice'
+import EditChoicePage from './Admin /EditChoice'
 const App = () => {
 
 
@@ -31,8 +34,14 @@ const App = () => {
         <Route path="/admin/quiz/delet/:id" element={<DeleteQuiz/>} />
         <Route path="/admin/quiz/:id" element={<Question />} />
         <Route path="/admin/quiz/questions/:id/create" element={<CreateQuestion/>} />
+        <Route path="/admin/quiz/:quizId/questions/:id/new" element={<EditQuestion/>} />
+        <Route path="/admin/quiz/:quizId/questions/:id/choice" element={<Choice/>} />
+        <Route path="/admin/quiz/:quizId/questions/:questionsId/choice/new" element={<CreateChoiceForm/>} />
+        <Route path="/admin/quiz/:quizId/questions/:questionsId/choice/:choiceId" element={<EditChoicePage/>} />
 
-        <Route path="/admin/quiz/edit/questions/:id" element={<EditQuestion/>} />
+
+
+
 
 
 

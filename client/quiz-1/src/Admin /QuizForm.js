@@ -22,7 +22,7 @@ const QuizForm = () => {
       .then((data) => {
         // Handle the response or perform any necessary actions
         console.log('Quiz created successfully:', data);
-        navigate('/admin/quiz')
+        navigate('/admin')
       })
       .catch((error) => {
         console.error('Error creating quiz:', error);
