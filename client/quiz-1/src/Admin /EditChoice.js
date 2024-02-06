@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const EditChoicePage = () => {
-  const { id, quizId, choiceId } = useParams();
-  console.log(useParams(),"edittt");
+  const { questionsId, quizId, choiceId } = useParams();
 //   console.log(choiceId,"hcocieee");
   const navigate = useNavigate();
   const [choice, setChoice] = useState({
@@ -37,12 +36,12 @@ const EditChoicePage = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(choice),
+      body: JSON.stringify({choice,questionsId,choiceId}),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log(`Choice with ID ${choiceId} updated successfully`);
-        navigate(`/admin/quiz/${quizId}/questions/${id}/choices`);
+        navigate(`/admin/quiz/${quizId}/questions/${questionsId}/choice`);
       })
       .catch((error) => {
         console.error(`Error updating choice with ID ${choiceId}:`, error);

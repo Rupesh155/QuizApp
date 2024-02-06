@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const EditQuestion = () => {
-  const { quizId,id } = useParams();
+  const { quizId,questionsId } = useParams();
+ 
   const [questionTitle, setQuestionTitle] = useState('');
   const navigate = useNavigate();
   
 
   useEffect(() => {
     // Fetch question data from your server API based on the question ID
-    fetch(`http://localhost:4000/api/questions/${id}`)
+    fetch(`http://localhost:4000/api/questions/${questionsId}`)
       .then((response) => response.json())
       .then((data) => {
         setQuestionTitle(data.title);
@@ -17,7 +18,7 @@ const EditQuestion = () => {
       .catch((error) => {
         console.error('Error fetching question data for editing:', error);
       });
-  }, [id]);
+  }, [questionsId]);
 
   const handleTitleChange = (e) => {
     setQuestionTitle(e.target.value);
@@ -25,7 +26,7 @@ const EditQuestion = () => {
 
   const handleSaveChanges = () => {
     // Perform a PUT request to update the question data on your server API
-    fetch(`http://localhost:4000/api/questions/${id}`, {
+    fetch(`http://localhost:4000/api/questions/${questionsId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

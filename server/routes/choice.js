@@ -10,7 +10,7 @@ router.post('/choices', async (req, res) => {
     const choiceId = choice._id;
     const questionId = req.body.questionId;
     const isCorrect = req.body.isCorrect;
-    console.log(questionId, choiceId, isCorrect, "quesID");
+    // console.log(questionId, choiceId, isCorrect, "quesID");
     const quizQuestion = await QuestionChoice.create({ choiceId, isCorrect, questionId });
     res.status(201).json(choice);
   } catch (error) {
@@ -60,9 +60,15 @@ router.put('/choices/:id', async (req, res) => {
 
 // Delete a choice by ID
 router.delete('/choices/:id', async (req, res) => {
+
   try {
     const choice = await Choice.findByIdAndDelete(req.params.id);
-    if (!choice) {
+    const questionChoice = await QuestionChoice.findOneAndDelete({
+      questionId: req.body.questionsId,
+      choiceId: req.params.id,
+    });
+                  
+    if (!choice && !questionChoice) {
       res.status(404).json({ error: 'Choice not found' });
       return;
     }

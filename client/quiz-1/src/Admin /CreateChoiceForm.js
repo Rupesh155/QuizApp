@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const CreateChoiceForm = () => {
-  const { questionsId } = useParams();
-
+  const { questionsId ,quizId} = useParams();
   const navigate = useNavigate();
 
   const [choice, setChoice] = useState({
@@ -39,7 +38,7 @@ const CreateChoiceForm = () => {
       .then((data) => {
         console.log('Choice created successfully:', data);
         // Redirect to the choices list or any other desired route
-        navigate(`/admin/questions/${questionsId}`);
+        navigate(`/admin/quiz/${quizId}/questions/${questionsId}/choice`);
       })
       .catch((error) => console.error('Error creating choice:', error));
   };

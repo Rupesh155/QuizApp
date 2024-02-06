@@ -3,7 +3,7 @@ import { useNavigate,useParams } from 'react-router-dom';
 const CreateQuestion = () => {
   const [questionTitle, setQuestionTitle] = useState('');
   const navigate = useNavigate();
-  let {id}=useParams()
+  let {quizId}=useParams()
   const handleTitleChange = (e) => {
     setQuestionTitle(e.target.value);
   };
@@ -14,12 +14,12 @@ const CreateQuestion = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ title: questionTitle , quizId:id}),
+      body: JSON.stringify({ title: questionTitle , quizId:quizId}),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log('Question created successfully:', data);
-        navigate(`/admin/quiz/${id}`)
+        navigate(`/admin/quiz/${quizId}`)
         // Navigate back to the questions page or any other desired route
        
       })

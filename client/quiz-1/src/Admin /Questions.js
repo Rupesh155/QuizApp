@@ -4,9 +4,8 @@ import './Questions.css';
 const Questions = () => {
     const [questions, setQuestions] = useState([]);
     const navigate = useNavigate();
-    let { id } = useParams()
-  
-
+    let { quizId ,questionId} = useParams()
+   
     useEffect(() => {
         // Fetch questions from the server API when the component mounts
         fetchQuestions();
@@ -14,13 +13,15 @@ const Questions = () => {
 
     const fetchQuestions = () => {
         // Make a GET request to fetch questions from the server
-        fetch(`http://localhost:4000/api/quiz-questions/${id}`)
+        fetch(`http://localhost:4000/api/quiz-questions/${quizId}`)
             .then((response) => response.json())
             .then((data) => {
+                console.log(data,'rrrr');
                 // console.log(data[0].questionId,"quesId");
                 setQuestions(data);
                 // 
             })
+         
             .catch((error) => {
                 console.error('Error fetching questions:', error);
             });
@@ -28,7 +29,7 @@ const Questions = () => {
     const handleAddQuestion = () => {
         // Perform any logic to add a new question (e.g., show a form)
         console.log('Add question logic goes here');
-        navigate(`/admin/quiz/questions/${id}/create`)
+        navigate(`/admin/quiz/${quizId}/questions/create`)
         // console.log(questionId,"qu");
 
     };
@@ -36,23 +37,29 @@ const Questions = () => {
         // Navigate to the edit page or perform any other logic
         console.log(`Edit question with ID ${questionId} logic goes here`);
 
-        navigate(`/admin/quiz/${id}/questions/${questionId}/new`)
+        navigate(`/admin/quiz/${quizId}/questions/${questionId}/new`)
     };
-
-
     const handelCreateChoiceForm=(questionId)=>{
         console.log(questionId);
-        navigate(`/admin/quiz/${id}/questions/${questionId}/choice`)
+        navigate(`/admin/quiz/${quizId}/questions/${questionId}/choice`)
 
 
     }
 
+    useEffect(()=>{
+        handleDeleteQuestion()
+        
+    },[questionId])
+
     const handleDeleteQuestion = (questionId) => {
-        console.log(questionId, "quesId");
         // Perform a DELETE request to delete the question on the server
         fetch(`http://localhost:4000/api/questions/${questionId}`, {
-            method: 'DELETE',
-        })
+            method: 'DELETE',  headers: {
+                'Content-Type': 'application/json',
+            },
+             body: JSON.stringify({ quizId:quizId }),
+        }
+        )
             .then((response) => response.json())
             .then((data) => {
                 console.log(`Question with ID ${questionId} deleted successfully`);
@@ -74,7 +81,7 @@ const Questions = () => {
 
                 {questions.map((question) => (
                     <div key={question.id}>
-                        <h4  onClick={()=>handelCreateChoiceForm(question.questionId?._id)} >{question?.questionId?.title}</h4>
+                        <h4  onClick={()=>handelCreateChoiceForm(question.questionId?._id)} >{question?.questionId.title}</h4>
                        
                         <button onClick={() => handleEditQuestion(question.questionId?._id)}>Edit</button>
                         <button onClick={() => handleDeleteQuestion(question.questionId?._id)}>Delete</button>

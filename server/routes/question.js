@@ -59,8 +59,14 @@ router.put('/questions/:id', async (req, res) => {
 
 // Delete a question by ID
 router.delete('/questions/:id', async (req, res) => {
+  // console.log(req.body);
+  let quizId=req.body.quizId
+  // console.log(quizId,"quizId");
   try {
     const question = await Question.findByIdAndDelete(req.params.id);
+      let DeleteQuiz=  await QuizQuestion.findOneAndDelete({quizId,questionId:req.params.id})
+      console.log(DeleteQuiz,"deletequizz");
+    // await QuizQuestion.findByIdAndRemove(id);
     if (!question) {
       res.status(404).json({ error: 'Question not found' });
       return;

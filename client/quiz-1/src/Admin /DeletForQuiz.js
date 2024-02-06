@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
 const DeleteQuiz = () => {
-  const { id } = useParams();
+  const { quizId } = useParams();
   const [quizTitle, setQuizTitle] = useState('');
   const navigate = useNavigate();
-
   useEffect(() => {
     // Fetch quiz data from your server API based on the quizId
-    fetch(`http://localhost:4000/api/quizzes/${id}`)
+    fetch(`http://localhost:4000/api/quizzes/${quizId}`)
       .then((response) => response.json())
       .then((data) => {
         setQuizTitle(data.title);
@@ -16,11 +14,11 @@ const DeleteQuiz = () => {
       .catch((error) => {
         console.error('Error fetching quiz data for deletion:', error);
       });
-  }, [id]);
+  }, [quizId]);
 
   const handleDeleteQuiz = () => {
     // Perform a DELETE request to delete the quiz on your server API
-    fetch(`http://localhost:4000/api/quizzes/${id}`, {
+    fetch(`http://localhost:4000/api/quizzes/${quizId}`, {
       method: 'DELETE',
     })
       .then((response) => response.json())

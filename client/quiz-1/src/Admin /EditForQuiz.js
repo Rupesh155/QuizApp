@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link ,useNavigate,useParams} from 'react-router-dom';
 
 
-const EditQuiz = ({ quizId }) => {
- let {id}=    useParams()
+const EditQuiz = () => {
+ let {quizId}=    useParams()
     let navigate=    useNavigate()
   const [quizTitle, setQuizTitle] = useState('');
 
 
   useEffect(() => {
     // Fetch quiz data from your server API based on the quizId
-    fetch(`http://localhost:4000/api/quizzes/${id}`)
+    fetch(`http://localhost:4000/api/quizzes/${quizId}`)
       .then((response) => response.json())
       .then((data) => {
         // Update state with the fetched data
@@ -28,7 +28,7 @@ const EditQuiz = ({ quizId }) => {
 
   const handleSaveChanges = () => {
     // Perform a PUT request to update the quiz data on your server API
-    fetch(`http://localhost:4000/api/quizzes/${id}`, {
+    fetch(`http://localhost:4000/api/quizzes/${quizId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
