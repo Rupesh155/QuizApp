@@ -32,6 +32,7 @@ router.get('/exams', async (req, res) => {
 router.get('/exams/:id', async (req, res) => {
   try {
     const exam = await Exam.findById(req.params.id).populate('quiz_id');
+    console.log(exam,'rrrrr');
     if (!exam) {
       return res.status(404).json({ error: 'Exam not found' });
     }

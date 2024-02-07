@@ -16,7 +16,9 @@ import EditChoicePage from './Admin /EditChoice'
 import Home from './Home'
 import './App.css'
 import Exam from './Exam/Exam';
-import Edit from './Exam/Edit';
+import UsersInExam from './Exam/UsersInExam';
+import AddUserToExam from './Exam/AddUserToExam';
+
 const App = () => {
 
 
@@ -46,7 +48,11 @@ const App = () => {
         <Route path="/admin/quiz/:quizId/questions/:questionsId/choice/new" element={<CreateChoiceForm/>} />
         <Route path="/admin/quiz/:quizId/questions/:questionsId/choice/:choiceId" element={<EditChoicePage/>} />
         <Route  path='/exam'  element={<Exam/>}/>
-        <Route  path='/exam/edit/:id'  element={<Edit/>}/>
+        {/* <Route  path='/exam/:examId/users'  element={<UsersInExam/>}/> */}
+        <Route  path='/exam/:examId/new'  element={<AddUserToExam/>}/>
+
+
+        
 
       </Routes>
     

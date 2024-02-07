@@ -17,7 +17,7 @@ const quizQuestionRouter = require('./routes/quizQuestion');
 // const userRouter = require('./routes/user');
 const questionChoicesRouter = require('./routes/questionChoice');
 const loginRouter = require('./routes/login');
-const signupRouter = require('./routes/signup');
+const usersRouter = require('./routes/users');
 const examRouter =require('./routes/exam')
 const examUserRouter=require('./routes/examUser')
 const roleRouter=require('./routes/role')
@@ -31,7 +31,7 @@ app.use('/api', quizQuestionRouter);
 // app.use('/api', userRouter);
 app.use('/api', questionChoicesRouter);
 app.use('/api', loginRouter);
-app.use('/api', signupRouter);
+app.use('/api', usersRouter);
 app.use('/api', examRouter);
 app.use('/api', roleRouter);
 app.use('/api', examUserRouter);

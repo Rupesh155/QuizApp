@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const Auth = require('../models/auth');
+const Auth = require('../models/users');
 let bcrypt=  require('bcrypt')
    let   generateAuthToken=  require('../jwtTokenGenerate')
 router.post('/login', async(req,res)=>{
