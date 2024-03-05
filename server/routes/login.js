@@ -16,7 +16,7 @@ router.post('/login', async(req,res)=>{
 
     }
     if(!userData){
-        res.status(401).send({msg:"signUp kiya tune ???"})
+       return  res.status(401).send({msg:"signUp kiya tune ???"})
     }
      const validPassword=  await bcrypt.compare(userInfo.passWord,userData.passWord).catch((err)=>{
         console.log(err,"err while matching passoword")

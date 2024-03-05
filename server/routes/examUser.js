@@ -69,89 +69,128 @@
 //   }
 // });
 
-// module.exports = router;
+
+
+
 const express = require('express');
 const router = express.Router();
-// const Exam = require('../models/exam'); // Assuming you have a model for exams
-// const User = require('../models/users'); // Assuming you have a model for users
-const ExamUser = require('../models/examUser');
+const Exam = require('../models/exam');
+const User = require('../models/users');
 
-
-// Create (POST): Add a user to a particular exam
+// Add a user to a particular exam
+// Add a user to a particular exam
+const ExamUser = require('../models/examUser'); // Import the ExamUser model
 router.post('/exam/:examId/users', async (req, res) => {
-    const { examId } = req.params;
-    const { userId } = req.body;
+  const { examId } = req.params;
+  const { userId } = req.body;
 
-    try {
-        const exam = await ExamUser.findById(examId).populate('Exam');
-        console.log(exam,"rr");
-        if (!exam) {
-            return res.status(404).json({ error: 'Exam not found' });
-        }
-
-        const user = await exam.findById(userId);
-        console.log(user,"user");
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-      // await   exam.create()
-     let  userExaam=   new ExamUser({
-          ...req.body
-        })
-
-        await userExaam.save();
-
-        res.status(201).json({ message: 'User added to exam successfully' });
-    } catch (error) {
-        console.error('Error adding user to exam:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+  try {
+    // Check if the user is already enrolled in the exam
+    const existingExamUser = await ExamUser.findOne({ exam_id: examId, user_id: userId });
+    if (existingExamUser) {
+      return res.status(400).json({ error: 'User is already enrolled in the exam' });
     }
+
+    // Create a new examUser object with the examId and userId
+    const examUser = new ExamUser({
+      exam_id: examId,
+      user_id: userId,
+    });
+
+    // Save the examUser object to the database
+    await examUser.save();
+
+    res.status(201).json({ message: 'User added to exam successfully' });
+  } catch (error) {
+    console.error('Error adding user to exam:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
-// Read (GET): Retrieve all users enrolled in a particular exam
+
+
+
+
+
+
+
+
+
+
+
+// router.post('/exam/:examId/users', async (req, res) => {
+//     const { examId } = req.params;
+//     const { userId } = req.body;
+  
+//     try {
+//       // const exam = await Exam.findById(examId);
+//       // if (!exam) {
+//       //   return res.status(404).json({ error: 'Exam not found' });
+//       // }
+  
+//       // Check if the user is already enrolled in the exam
+//       // if (exam.users.includes(userId)) {
+//       //   return res.status(400).json({ error: 'User is already enrolled in the exam' });
+//       // }
+  
+//       // const user = await User.findById(userId);
+//       // if (!user) {
+//       //   return res.status(404).json({ error: 'User not found' });
+//       // }
+  
+//       // Add the user to the exam's list of users
+//       exam.users.push(userId);
+//       await exam.save();
+  
+//       res.status(201).json({ message: 'User added to exam successfully' });
+//     } catch (error) {
+//       console.error('Error adding user to exam:', error);
+//       res.status(500).json({ error: 'Internal Server Error' });
+//     }
+//   });
+  
+// Retrieve all users enrolled in a particular exam
 router.get('/exam/:examId/users', async (req, res) => {
-    const { examId } = req.params;
+  const { examId } = req.params;
 
-    try {
-        const exam = await Exam.findById(examId).populate('users');
-        if (!exam) {
-            return res.status(404).json({ error: 'Exam not found' });
-        }
-
-        res.json(exam.users);
-    } catch (error) {
-        console.error('Error getting users in exam:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+  try {
+    const examUsers = await ExamUser.find({ exam_id: examId }).populate('user_id');
+    if (!examUsers) {
+      return res.status(404).json({ error: 'Exam not found' });
     }
+      let examD=   examUsers.map((data)=>{
+        return data.user_id
+
+    })
+
+    res.json(examD);
+  } catch (error) {
+    console.error('Error getting users in exam:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
-// Update (PUT): Update details of a user enrolled in a particular exam (if necessary)
-// For example, you might want to update the user's role or status in the exam
+// Update details of a user enrolled in a particular exam (if necessary)
 
-// Delete (DELETE): Remove a user from a particular exam
+// Remove a user from a particular exam
 router.delete('/exam/:examId/users/:userId', async (req, res) => {
-    const { examId, userId } = req.params;
+  const { examId, userId } = req.params;
 
-    try {
-        const exam = await Exam.findById(examId);
-        if (!exam) {
-            return res.status(404).json({ error: 'Exam not found' });
-        }
-
-        const userIndex = exam.users.findIndex(user => user.toString() === userId);
-        if (userIndex === -1) {
-            return res.status(404).json({ error: 'User not found in exam' });
-        }
-
-        exam.users.splice(userIndex, 1);
-        await exam.save();
-
-        res.json({ message: 'User removed from exam successfully' });
-    } catch (error) {
-        console.error('Error removing user from exam:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+  try {
+    const exam = await Exam.findById(examId);
+    if (!exam) {
+      return res.status(404).json({ error: 'Exam not found' });
     }
+
+    // Remove the user from the exam's list of users
+    exam.users.pull(userId);
+    await exam.save();
+
+    res.json({ message: 'User removed from exam successfully' });
+  } catch (error) {
+    console.error('Error removing user from exam:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 module.exports = router;

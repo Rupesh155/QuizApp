@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const AddUserToExam = () => {
     let {examId}=useParams()
+    let navigate=useNavigate()
     console.log(examId,"examId");
     const [exam, setExam] = useState(null);
     const [users, setUsers] = useState([]);
@@ -17,7 +18,9 @@ const AddUserToExam = () => {
         fetchExam()
     }, []);
 
-
+const  handleShow=()=>{
+    navigate(`/exam/${examId}/users`)
+}
     const fetchExam = async () => {
         try {
             const response = await axios.get(`http://localhost:4000/api/exams/${examId}`);
@@ -62,6 +65,8 @@ const AddUserToExam = () => {
         try {
             await axios.post(`http://localhost:4000/api/exam/${examId}/users`, { userId: selectedUserId });
             alert('User added to exam successfully');
+            navigate(`/exam/${examId}/new`)
+            
             // You may want to perform additional actions after adding user to exam, like updating state or fetching updated exam data
         } catch (error) {
             console.error('Error adding user to exam:', error);
@@ -71,6 +76,8 @@ const AddUserToExam = () => {
     return (
         <div>
             <h2>Add User to Exam</h2>
+
+            <Button onClick={handleShow}> SHow All List</Button>
             
                 <Form>
                     <FormGroup>
@@ -78,7 +85,9 @@ const AddUserToExam = () => {
                         <Input type="select" name="user" id="user" onChange={handleUserSelect}>
                             <option value="">Select User</option>
                             {users.map((user) => (
+                           
                                 <option key={user._id} value={user._id}>{user.name}</option>
+                              
                             ))}
                         </Input>
                     </FormGroup>

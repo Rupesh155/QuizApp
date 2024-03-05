@@ -1,11 +1,12 @@
 // src/components/SignUpForm.js
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
-import './SignUp.css';
+import { Link ,useNavigate} from "react-router-dom";
+import './Signup.css'
+
 const SignUpForm = () => {
+    let navigate=      useNavigate()
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
     passWord: '',
   });
@@ -22,7 +23,7 @@ const SignUpForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:4000/api/register', {
+      const response = await fetch('http://localhost:4000/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,6 +38,8 @@ const SignUpForm = () => {
       // Successful signup, you can handle the response accordingly
       const responseData = await response.json();
       console.log('Signup successful:', responseData);
+      navigate('/login')
+      
     } catch (error) {
       console.error('Error during signup:', error.message);
     }
@@ -47,21 +50,11 @@ const SignUpForm = () => {
     <div className="signup-card">  
     <form className="signup-form" onSubmit={handleSubmit}>
       <label>
-        First Name:
+         Name:
         <input
           type="text"
-          name="firstName"
-          value={formData.firstName}
-          onChange={handleChange}
-          required
-        />
-      </label>
-      <label>
-        Last Name:
-        <input
-          type="text"
-          name="lastName"
-          value={formData.lastName}
+          name="name"
+          value={formData.name}
           onChange={handleChange}
           required
         />

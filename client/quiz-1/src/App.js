@@ -18,10 +18,14 @@ import './App.css'
 import Exam from './Exam/Exam';
 import UsersInExam from './Exam/UsersInExam';
 import AddUserToExam from './Exam/AddUserToExam';
+import ShowExam from './Exam/ShowExam';
+import EditExam from './Exam/EditExam';
+import SignUpForm from './UserDashBoard/Authentications/Signup';
+import LoginForm from './UserDashBoard/Authentications/Login';
 
 const App = () => {
 
-
+  // i want editExam.js file for edit exam with some conditons case-1 if exam stated then we can not any changes , case-2.   if exam was not start then we can edit anythink , case-3 if exam end then we can not edit anythink case-4 start time never bhi less then end time 
 
 
   const handleOpenQuiz = (quizId) => {
@@ -37,8 +41,11 @@ const App = () => {
       {/* <AdminPage/> */}
       <Routes>
         <Route path='/' element={<Home/>} />
+        <Route path='/signup' element={<SignUpForm/>} />
+        <Route path='/login' element={<LoginForm/>} />
+
       <Route path="/admin" element={<AdminPage onOpenQuiz={handleOpenQuiz} />} />
-        <Route path='/admin/quiz' element={<QuizForm/>}/>
+        <Route path='/admin/quiz/new' element={<QuizForm/>}/>
         <Route path="/admin/quiz/edit/:quizId" element={<EditQuiz />} />
         <Route path="/admin/quiz/delet/:quizId" element={<DeleteQuiz/>} />
         <Route path="/admin/quiz/:quizId" element={<Question />} />
@@ -48,8 +55,11 @@ const App = () => {
         <Route path="/admin/quiz/:quizId/questions/:questionsId/choice/new" element={<CreateChoiceForm/>} />
         <Route path="/admin/quiz/:quizId/questions/:questionsId/choice/:choiceId" element={<EditChoicePage/>} />
         <Route  path='/exam'  element={<Exam/>}/>
-        {/* <Route  path='/exam/:examId/users'  element={<UsersInExam/>}/> */}
+        <Route  path='/exam/showexam'  element={<ShowExam/>}/>
+        <Route  path='/exam/edit/:examId'  element={<EditExam/>}/>
         <Route  path='/exam/:examId/new'  element={<AddUserToExam/>}/>
+        <Route  path='/exam/:examId/users'  element={<UsersInExam/>}/>
+
 
 
         

@@ -20,8 +20,10 @@ const EditChoicePage = () => {
     fetch(`http://localhost:4000/api/choices/${choiceId}`)
       .then((response) => response.json())
       .then((data) => {
+        // data.map((data)=>console.log(data.choiceId,"databhi"))
+        console.log(data.choiceId,"vhoiceeeeeeee");
         setChoice(data);
-        console.log(data,"data");
+        
       })
       .catch((error) => {
         console.error('Error fetching choice:', error);
@@ -38,7 +40,7 @@ const EditChoicePage = () => {
       },
       body: JSON.stringify({choice,questionsId,choiceId}),
     })
-      .then((response) => response.json())
+      .then((response) => response.json())  
       .then((data) => {
         console.log(`Choice with ID ${choiceId} updated successfully`);
         navigate(`/admin/quiz/${quizId}/questions/${questionsId}/choice`);
@@ -48,12 +50,24 @@ const EditChoicePage = () => {
       });
   };
 
+  // const handleChange = (e) => {
+  //   setChoice({
+  //     ...choice,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
   const handleChange = (e) => {
-    setChoice({
-      ...choice,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value, type, checked } = e.target;
+    const newValue = type === 'checkbox' ? checked : value;
+  
+    setChoice(prevChoice => ({
+      ...prevChoice,
+      [name]: newValue,
+    }));
   };
+  
+  
+  
 
   return (
     <div>

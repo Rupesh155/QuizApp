@@ -100,6 +100,7 @@ const ShowChoicesPage = () => {
     fetch(`http://localhost:4000/api/question-choices/${questionsId}`)
       .then((response) => response.json())
       .then((data) => {
+        
         setChoices(data);
       
       })
