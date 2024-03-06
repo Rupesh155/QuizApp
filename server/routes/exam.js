@@ -7,6 +7,10 @@ const express = require('express');
 const router = express.Router();
 const Exam = require('../models/exam');
 
+    const QuizQuestion = require('../models/quizQuestion');
+const QuestionChoice = require('../models/questionChoice');
+
+
 // Create Exam
 router.post('/exams', async (req, res) => {
   try {
@@ -29,6 +33,41 @@ router.get('/exams', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+  router.get('/exams/:id/questions', async (req, res) => {
+    try {
+      const exam = await Exam.findById(req.params.id).populate('quiz_id');
+      console.log(exam,"exammmm");
+
+      if (!exam) {
+        return res.status(404).json({ error: 'Exam not found' });
+      }
+      const quiz = exam.quiz_id._id;
+      // console.log(quiz,"quiz");
+          let quizId=      quiz.toString()
+          console.log(quizId,"quizzddad");
+
+      const quizQuestions = await QuizQuestion.find({ quizId}).populate('questionId');
+      console.log(quizQuestions,"quizQuestionssss");
+        let newQuestionId=    quizQuestions.map((data)=>{
+        // console.log(data.questionId._id.toString(),"datyat era");
+        return data.questionId._id.toString()
+        
+
+      })
+    const questionChoices = await QuestionChoice.find({ questionId: { $in: newQuestionId }  }).populate('choiceId');
+
+      // for(let newQuestionsId of newQuestionId){
+
+      // }
+
+      console.log(exam,quizQuestions,questionChoices,"rrr");
+      res.json({exam,quizQuestions,questionChoices});
+    } catch (error) {
+      console.error('Error getting questions by exam ID:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
   
 
 // Get Exam by ID

@@ -22,6 +22,8 @@ import ShowExam from './Exam/ShowExam';
 import EditExam from './Exam/EditExam';
 import SignUpForm from './UserDashBoard/Authentications/Signup';
 import LoginForm from './UserDashBoard/Authentications/Login';
+import ExamDashboard from './UserDashBoard/ExamDashBoard';
+import ExamInterface from './UserDashBoard/ExamInterface';
 
 const App = () => {
 
@@ -43,6 +45,10 @@ const App = () => {
         <Route path='/' element={<Home/>} />
         <Route path='/signup' element={<SignUpForm/>} />
         <Route path='/login' element={<LoginForm/>} />
+        <Route  path='/userexam'  element={<ExamDashboard/>}/>
+        <Route  path='/examInterface/:examId'  element={<ExamInterface/>}/>
+
+
 
       <Route path="/admin" element={<AdminPage onOpenQuiz={handleOpenQuiz} />} />
         <Route path='/admin/quiz/new' element={<QuizForm/>}/>
@@ -59,6 +65,8 @@ const App = () => {
         <Route  path='/exam/edit/:examId'  element={<EditExam/>}/>
         <Route  path='/exam/:examId/new'  element={<AddUserToExam/>}/>
         <Route  path='/exam/:examId/users'  element={<UsersInExam/>}/>
+
+        
 
 
 
