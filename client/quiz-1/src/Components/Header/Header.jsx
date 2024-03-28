@@ -44,7 +44,7 @@ const Header = () => {
           </ul>
         </div>
         <Link to="contact" spy={true} smooth={true}>
-        <Link   to="/signup" className="button n-button">Signup</Link>
+        <Link   to="/signup" className="button n-button">Signup/Login</Link>
         </Link>
       </div>
     </div>

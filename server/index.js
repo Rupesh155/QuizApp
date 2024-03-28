@@ -22,6 +22,7 @@ const examRouter =require('./routes/exam')
 const examUserRouter=require('./routes/examUser')
 const roleRouter=require('./routes/role')
 const userAttemptRouter=require('./routes/userAttempt')
+        const marksRouter=     require('./routes/MarkChoice')
 // Use your routers
 app.use('/api', quizRouter);
 app.use('/api', questionRouter);
@@ -36,7 +37,7 @@ app.use('/api', examRouter);
 app.use('/api', roleRouter);
 app.use('/api', examUserRouter);
 app.use('/api', userAttemptRouter);
-
+app.use('/api', marksRouter)
 app.listen(4000, () => {
     console.log('server running on port no 4000');
 })

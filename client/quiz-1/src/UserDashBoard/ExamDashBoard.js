@@ -28,11 +28,14 @@ const ExamDashboard = () => {
 
     const handleSortOrderChange = (order) => {
         setSortOrder(order);
-        const sortedExams = [...filteredExams].sort((a, b) => {
-            return order === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+        const sortedExams = [...exams].sort((a, b) => {
+            const nameA = a?.quiz_id?.title || '';
+            const nameB = b?.quiz_id?.title || '';
+            return order === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
         });
-        setFilteredExams(sortedExams);
+        setFilteredExams(sortedExams.filter(exam => new Date(exam.start_time) > new Date()));
     };
+    
 
     useEffect(() => {
         const interval = setInterval(() => {
